@@ -125,8 +125,55 @@ def main(args):
             cv2.circle(img, (int(pts_x), int(pts_y)), 3, (255, 0, 0), -1)
             cv2.putText(img, text, (int(pts_x), int(pts_y)), cv2.FONT_HERSHEY_COMPLEX, 0.75, (0, 255, 0), 2)
     
-    cv2.imwrite('test_'+args.img_path.split('/')[-1],img)
+    cv2.imwrite('output/test_'+args.img_path.split('/')[-1],img)
 
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser('SPTSv2 Video Frame Processing', parents=[get_args_parser()])
+    args = parser.parse_args()
+    
+    # Adjust these paths accordingly
+    video_path = './images/vlc_record.mp4'  # Path to your video file
+    args.resume = 'pretrained_model.pth'  # Path to the model checkpoint
+    args.pre_norm = True
+    args.pad_rec = True
+
+    # Initialize video capture
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        print("Error: Could not open video.")
+        exit()
+
+    frame_idx = 0  # Frame counter
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break  # Break the loop if no frame is captured
+        
+        # Convert the captured frame to PIL Image for processing
+        frame_pil = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+
+        # Temporarily save the frame to pass its path to the existing code
+        # Consider modifying the code to work directly with image data instead of paths for efficiency
+        temp_frame_path = f'./temp/frame_{frame_idx}.jpg'
+        frame_pil.save(temp_frame_path)
+
+        # Set the image path argument to the current frame's path
+        args.img_path = temp_frame_path
+
+        # Process the current frame
+        main(args)  # Assuming the existing logic in main() can be applied as is
+
+        # Optionally, save or display the processed frame
+        # For example, display the frame with cv2.imshow('frame', frame) and cv2.waitKey(1)
+
+        frame_idx += 1  # Increment the frame counter
+
+    # Release the video capture object and close all OpenCV windows
+    cap.release()
+    cv2.destroyAllWindows()
+
+"""
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('SPTSv2 yyds', parents=[get_args_parser()])
     args = parser.parse_args()
@@ -135,3 +182,4 @@ if __name__ == '__main__':
     args.pre_norm = True
     args.pad_rec = True
     main(args)
+"""
