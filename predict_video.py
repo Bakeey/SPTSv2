@@ -134,6 +134,7 @@ if __name__ == '__main__':
     # Adjust these paths accordingly
     video_path = './images/vlc_record.mp4'  # Path to your video file
     args.resume = 'pretrained_model.pth'  # Path to the model checkpoint
+    args.device = 'cpu'
     args.pre_norm = True
     args.pad_rec = True
 
@@ -162,6 +163,7 @@ if __name__ == '__main__':
         args.img_path = temp_frame_path
 
         # Process the current frame
+        print(frame_idx)
         main(args)  # Assuming the existing logic in main() can be applied as is
 
         # Optionally, save or display the processed frame
