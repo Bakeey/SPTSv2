@@ -108,23 +108,29 @@ def main(args):
 
     # get predictions
     output = model(image_new,seq,seq, text_length=args.max_length)
-    outputs, values, _ = output
-    N = (outputs[0].shape[0])//(args.max_length+2)
-    img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-    for i in range(N):
-        v = values[0][(args.max_length+2)*i:((args.max_length+2))*i+(args.max_length+2)].mean().item()
-        if v > 0.922:
-            text = ''
-            pts_x = outputs[0][(args.max_length+2)*i].item() * (float(w_ori) / 1000)
-            pts_y = outputs[0][(args.max_length+2)*i+1].item() * (float(h_ori) / 1000)
-            for c in outputs[0][(args.max_length+2)*i+2:(args.max_length+2)*i+(args.max_length+2)].tolist():
-                if 1000 < c < 1000 + len(args.chars) + 1:
-                        text += args.chars[c-1000]
-                else:
-                    break
-            cv2.circle(img, (int(pts_x), int(pts_y)), 3, (255, 0, 0), -1)
-            cv2.putText(img, text, (int(pts_x), int(pts_y)), cv2.FONT_HERSHEY_COMPLEX, 0.75, (0, 255, 0), 2)
+
+    # robustness against nonepredictions
+    if output is not None:
+        outputs, values, _ = output
+        N = (outputs[0].shape[0])//(args.max_length+2)
+        img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+        for i in range(N):
+            v = values[0][(args.max_length+2)*i:((args.max_length+2))*i+(args.max_length+2)].mean().item()
+            if v > 0.922:
+                text = ''
+                pts_x = outputs[0][(args.max_length+2)*i].item() * (float(w_ori) / 1000)
+                pts_y = outputs[0][(args.max_length+2)*i+1].item() * (float(h_ori) / 1000)
+                for c in outputs[0][(args.max_length+2)*i+2:(args.max_length+2)*i+(args.max_length+2)].tolist():
+                    if 1000 < c < 1000 + len(args.chars) + 1:
+                            text += args.chars[c-1000]
+                    else:
+                        break
+                cv2.circle(img, (int(pts_x), int(pts_y)), 3, (255, 0, 0), -1)
+                cv2.putText(img, text, (int(pts_x), int(pts_y)), cv2.FONT_HERSHEY_COMPLEX, 0.75, (0, 255, 0), 2)
     
+    else: # nothing predicted
+        img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+
     cv2.imwrite('output/test_'+args.img_path.split('/')[-1],img)
 
 if __name__ == '__main__':
