@@ -1,6 +1,7 @@
 # Copyright (2023) Bytedance Ltd. and/or its affiliates
 import time
 import json
+import os
 import torch
 import random
 import argparse
@@ -121,7 +122,7 @@ def main(args):
                 pts_x = outputs[0][(args.max_length+2)*i].item() * (float(w_ori) / 1000)
                 pts_y = outputs[0][(args.max_length+2)*i+1].item() * (float(h_ori) / 1000)
                 for c in outputs[0][(args.max_length+2)*i+2:(args.max_length+2)*i+(args.max_length+2)].tolist():
-                    if 1000 < c < 1000 + len(args.chars) + 1:
+                    if 1000 < c < 1000 + len(args.chars):
                             text += args.chars[c-1000]
                     else:
                         break
@@ -130,7 +131,9 @@ def main(args):
     
     else: # nothing predicted
         img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-
+    
+    if not os.path.exists('output'):
+        os.makedirs('output')
     cv2.imwrite('output/test_'+args.img_path.split('/')[-1],img)
 
 if __name__ == '__main__':
@@ -138,9 +141,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     # Adjust these paths accordingly
-    video_path = './images/vlc_record.mp4'  # Path to your video file
+    video_path = '/home/nico/plr_project/tbm/data/rosbags/2024-03-21-10-42-51_video.mp4'  # Path to your video file
     args.resume = 'pretrained_model.pth'  # Path to the model checkpoint
-    args.device = 'cpu'
+    args.device = 'cuda:0'
     args.pre_norm = True
     args.pad_rec = True
 
@@ -150,9 +153,9 @@ if __name__ == '__main__':
         print("Error: Could not open video.")
         exit()
 
-    frame_idx = 0  # Frame counter
 
     while True:
+        frame_idx = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
         ret, frame = cap.read()
         if not ret:
             break  # Break the loop if no frame is captured
@@ -162,6 +165,8 @@ if __name__ == '__main__':
 
         # Temporarily save the frame to pass its path to the existing code
         # Consider modifying the code to work directly with image data instead of paths for efficiency
+        if not os.path.exists('./temp'):
+            os.makedirs('./temp')
         temp_frame_path = f'./temp/frame_{frame_idx}.jpg'
         frame_pil.save(temp_frame_path)
 
