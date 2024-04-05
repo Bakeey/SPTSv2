@@ -139,8 +139,8 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('SPTSv2 yyds', parents=[get_args_parser()])
     args = parser.parse_args()
-    args.img_path = '$HOME/screenshot_1.png'
-    args.resume = '$HOME/pretrained_model.pth'
+    args.img_path = '/cluster/home/kiten/screenshot_1.png'
+    args.resume = '/cluster/home/kiten/pretrained_model.pth'
     args.pre_norm = True
     args.pad_rec = True
     main(args)

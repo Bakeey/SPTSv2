@@ -28,7 +28,7 @@ ssh -Y user@euler.ethz.ch
 cd /cluster/work/riner/users/PLR-2024/
 cd [something]
 git pull
-git branch [something]
+git checkout dev/euler
 ```
 
 ### 3. load modules:
@@ -44,6 +44,10 @@ cd . && pip install -r requirements.txt
 ### 5. go into gpu node (with sufficient memory):
 ```bash
 srun --gpus=1 --cpus-per-task=1 --mem-per-cpu=16G --gres=gpumem:20g --x11 --pty bash
+```
+or
+```bash
+srun --gpus=1 --cpus-per-task=1 --mem-per-cpu=16G --gres=gpumem:20g --x11 --pty python3 script.py
 ```
 
 ### 6. run script:
