@@ -41,6 +41,12 @@ module load gcc/8.2.0 python/3.8.5 cuda/11.3.1
 cd . && pip install -r requirements.txt
 ```
 
+### 4.5. Prepare pytorch environment
+```bash
+export TORCH_HOME=$HOME
+```
+Have resnet in $HOME/hub/checkpoints/resnet50-0676ba61.pth and pretrained model in $HOME/pretrained_model.pth
+
 ### 5. go into gpu node (with sufficient memory):
 ```bash
 srun --gpus=1 --cpus-per-task=1 --mem-per-cpu=16G --gres=gpumem:20g --x11 --pty bash
