@@ -11,9 +11,44 @@ We recommend using [Anaconda](https://www.anaconda.com/) to manage environments.
 conda create -n sptsv2 python=3.7 -y
 conda activate sptsv2
 conda install pytorch==1.8.1 torchvision==0.9.1 torchaudio==0.8.1 -c pytorch
-git clone git@github.com:bytedance/SPTSv2.git
+git clone git@github.com:Bakeey/SPTSv2.git
 cd SPTSv2
 pip install -r requirements.txt
+```
+
+## Running on EULER
+
+### 1. Connect to euler
+```bash
+ssh -Y user@euler.ethz.ch
+```
+
+### 2. Go to directory and select correct branch
+```bash
+cd /cluster/work/riner/users/PLR-2024/
+cd [something]
+git pull
+git branch [something]
+```
+
+### 3. load modules:
+```bash
+module load gcc/8.2.0 python/3.8.5 cuda/11.3.1
+```
+
+### 4. install requirements base: 
+```bash
+cd . && pip install -r requirements.txt
+```
+
+### 5. go into gpu node (with sufficient memory):
+```bash
+srun --gpus=1 --cpus-per-task=1 --mem-per-cpu=16G --gres=gpumem:20g --x11 --pty bash
+```
+
+### 6. run script:
+```bash
+python3 script.py
 ```
 
 ## Dataset 
