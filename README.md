@@ -45,7 +45,7 @@ cd . && pip install -r requirements.txt
 ```bash
 export TORCH_HOME=$HOME
 ```
-Have resnet in $HOME/hub/checkpoints/resnet50-0676ba61.pth and pretrained model in $HOME/pretrained_model.pth
+Have resnet in $HOME/hub/checkpoints/resnet50-0676ba61.pth and pretrained model in $HOME/pretrained_model.pth. Use scp to copy the resnet50-0676ba61.pth file and pretrained_model.pth to the specified directory on the Euler remote server (/cluster/home/kiten/hub/checkpoints for the ResNet model).
 
 ### 5. go into gpu node (with sufficient memory):
 ```bash

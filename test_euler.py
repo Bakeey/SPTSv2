@@ -132,9 +132,9 @@ def main(args):
     else: # nothing predicted
         img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
     
-    if not os.path.exists('output'):
-        os.makedirs('output')
-    cv2.imwrite('output/test_'+args.img_path.split('/')[-1],img)
+    if not os.path.exists('/cluster/home/kiten/output'):
+        os.makedirs('/cluster/home/kiten/output')
+    cv2.imwrite('/cluster/home/kiten/output/test_'+args.img_path.split('/')[-1],img)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('SPTSv2 yyds', parents=[get_args_parser()])
