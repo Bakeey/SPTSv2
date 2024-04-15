@@ -152,7 +152,7 @@ if __name__ == '__main__':
     # Loop through the files in the folder
     for filename in os.listdir(folder_path):
         if filename.endswith(".jpg") or filename.endswith(".png"):  # check for specific file extensions
-            args.img_path = filename
+            args.img_path = folder_path+filename
             main(args)        
         else:
             continue
