@@ -21,4 +21,3 @@ einops
 cupy-cuda110
 editdistance
 shapely
-os
