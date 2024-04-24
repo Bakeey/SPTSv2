@@ -130,8 +130,9 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('SPTSv2 yyds', parents=[get_args_parser()])
     args = parser.parse_args()
-    args.img_path = 'images/screenshot_2.png'
+    args.img_path = 'images/deblurred.png'
     args.resume = 'pretrained_model.pth'
     args.pre_norm = True
     args.pad_rec = True
+    args.device = 'cpu'
     main(args)
